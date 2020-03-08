@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	controller "github.com/ihciah/ipmi-fan-controller"
 )
 
@@ -9,5 +11,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	controller.ExecuteLoop(config, controller.NewFanController())
+	executor := controller.NewExecutor(config)
+	_, err = executor.GetTemperature()
+	if err != nil {
+		log.Print(err)
+	}
 }
