@@ -6,39 +6,67 @@ import (
 	"os"
 )
 
-type config struct {
-	Addr       string `json:"addr"`
-	Username   string `json:"username"`
-	Password   string `json:"password"`
-	Timeout    int    `json:"timeout"`
+type Config struct {
+	IPMIConfig       IPMIConfig       `json:"ipmi"`
+	ControllerConfig ControllerConfig `json:"controller"`
+	TelegramConfig   TelegramConfig   `json:"telegram"`
+}
+type IPMIConfig struct {
+	Addr     string `json:"addr"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+type ControllerConfig struct {
 	Ticker     int    `json:"ticker"`
 	Executable string `json:"executable"`
 }
+type TelegramConfig struct {
+	Token string `json:"token"`
+	URL   string `json:"url"`
+}
 
-func (c *config) validate() error {
-	if c.Timeout <= 0 {
-		return errors.New("timeout cannot be 0")
+func (c *IPMIConfig) validate() error {
+	if c.Addr == "" {
+		return errors.New("IPMI addr can not be blank")
 	}
-	if c.Ticker <= 5 {
-		return errors.New("ticker cannot be less than 5")
+	if c.Username == "" {
+		return errors.New("IPMI username can not be blank")
+	}
+	if c.Password == "" {
+		return errors.New("IPMI password can not be blank")
 	}
 	return nil
 }
 
-func NewConfig(executable, addr, username, password string, timeout, ticker int) (config, error) {
-	c := config{
-		Addr:       addr,
-		Username:   username,
-		Password:   password,
-		Timeout:    timeout,
-		Ticker:     ticker,
-		Executable: executable,
+func (c *ControllerConfig) validate() error {
+	if c.Ticker == 0 {
+		c.Ticker = 60
 	}
-	return c, c.validate()
+	if c.Executable == "" {
+		c.Executable = "ipmitool"
+	}
+	return nil
 }
 
-func NewConfigFromFile(path string) (config, error) {
-	var c config
+func (c *TelegramConfig) validate() error {
+	return nil
+}
+
+func (c *Config) validate() (err error) {
+	if err = c.IPMIConfig.validate(); err != nil {
+		return
+	}
+	if err = c.ControllerConfig.validate(); err != nil {
+		return
+	}
+	if err = c.TelegramConfig.validate(); err != nil {
+		return
+	}
+	return
+}
+
+func NewConfigFromFile(path string) (Config, error) {
+	var c Config
 	file, err := os.Open(path)
 	if err != nil {
 		return c, err
