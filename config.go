@@ -21,10 +21,10 @@ type ControllerConfig struct {
 	Executable string `json:"executable"`
 }
 type TelegramConfig struct {
-	Token string `json:"token"`
-	URL   string `json:"url"`
-	Admin []int  `json:"admin"`
-	PollTimeout int `json:"poll_timeout"`
+	Token       string `json:"token"`
+	URL         string `json:"url"`
+	Admin       []int  `json:"admin"`
+	PollTimeout int    `json:"poll_timeout"`
 }
 
 func (c *IPMIConfig) validate() error {

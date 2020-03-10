@@ -1,5 +1,5 @@
-# IPMI Fan Controller
+# IPMI Controller
 
-A tool to monitor server temperature and set fan speed.
+通过 IPMI 自动监测服务器温度并设定风扇转速的小工具
 
-Since iDARC 7 cannot slow down the fan speed, manually set fan speed is an suitable approach to reduce the server noise.
+本服务自带 Telegram Bot 接口，可以方便查询服务器状态与开关机。

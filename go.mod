@@ -1,4 +1,4 @@
-module github.com/ihciah/ipmi-fan-controller
+module github.com/ihciah/ipmi-controller
 
 go 1.14
 

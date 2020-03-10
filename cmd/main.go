@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	controller "github.com/ihciah/ipmi-fan-controller"
+	controller "github.com/ihciah/ipmi-controller"
 )
 
 func main() {
