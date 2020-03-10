@@ -14,17 +14,17 @@ func ControlFanSpeed(e *IPMI) {
 			log.Printf("get temperature %d", temp)
 			switch true {
 			case temp < 30:
-				_, err = e.SetFanSpeed(10)
+				_, err = e.SetFanSpeed(8)
 			case temp < 45:
-				_, err = e.SetFanSpeed(13)
+				_, err = e.SetFanSpeed(10)
 			case temp < 55:
-				_, err = e.SetFanSpeed(16)
+				_, err = e.SetFanSpeed(13)
 			case temp < 65:
-				_, err = e.SetFanSpeed(20)
+				_, err = e.SetFanSpeed(18)
 			case temp < 75:
-				_, err = e.SetFanSpeed(30)
+				_, err = e.SetFanSpeed(25)
 			case temp < 85:
-				_, err = e.SetFanSpeed(50)
+				_, err = e.SetFanSpeed(35)
 			default:
 				_, err = e.SetFanSpeed(0)
 			}

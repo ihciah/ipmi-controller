@@ -4,7 +4,3 @@ github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 gopkg.in/tucnak/telebot.v2 v2.0.0-20191208085724-f286f15c031a h1:DQi0L5jfxuoCONYjd8aiYkPu7Gtk3hUIm5V3w/v4Wtg=
 gopkg.in/tucnak/telebot.v2 v2.0.0-20191208085724-f286f15c031a/go.mod h1:+//wyPtHTeW2kfyEBwB05Hqnxev7AGrsLIyylSH++KU=
-gopkg.in/tucnak/telebot.v2 v2.0.0-20191225234705-baa616bc00d5 h1:RZFYdp3MywQJRmd1GkxotXU/LhVlj5LcjAudFnr7Iyw=
-gopkg.in/tucnak/telebot.v2 v2.0.0-20191225234705-baa616bc00d5/go.mod h1:+//wyPtHTeW2kfyEBwB05Hqnxev7AGrsLIyylSH++KU=
-gopkg.in/tucnak/telebot.v2 v2.0.0-20200301001213-9852df39ae6c h1:+7l/yyky9hchNME0hDMl+cA+wVlHQGte/5EwKHeSqoc=
-gopkg.in/tucnak/telebot.v2 v2.0.0-20200301001213-9852df39ae6c/go.mod h1:+//wyPtHTeW2kfyEBwB05Hqnxev7AGrsLIyylSH++KU=
