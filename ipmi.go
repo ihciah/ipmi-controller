@@ -1,4 +1,4 @@
-package ipmi_fan_controller
+package ipmi_controller
 
 import (
 	"errors"
@@ -12,15 +12,15 @@ import (
 
 var (
 	tempNumRegexp = regexp.MustCompile(`(?m)Temp\s*\|\s*(\d*)`)
-	tempRegexp    = regexp.MustCompile(`^(.*?\s*)\|.*?(\|\s+\d*\s+degrees\s+C)`)
+	tempRegexp    = regexp.MustCompile(`([\w\s]*?)\|.*?(\|\s+\d*\s+degrees\s+C)`)
 )
 
 type IPMI struct {
 	Config
 }
 
-func NewIPMI(config Config) IPMI {
-	return IPMI{Config: config}
+func NewIPMI(config Config) *IPMI {
+	return &IPMI{Config: config}
 }
 
 func (e *IPMI) execute(arg ...string) (string, error) {
@@ -72,7 +72,8 @@ func (e *IPMI) GetTemperature() (string, error) {
 	}
 
 	lines := []string{"Temperature Sensors:"}
-	for _, match := range tempRegexp.FindAllStringSubmatch(output, -1) {
+	matches := tempRegexp.FindAllStringSubmatch(output, -1)
+	for _, match := range matches {
 		if len(match) > 2 {
 			lines = append(lines, match[1]+match[2])
 		}

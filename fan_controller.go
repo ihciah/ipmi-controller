@@ -1,4 +1,4 @@
-package ipmi_fan_controller
+package ipmi_controller
 
 import (
 	"log"
