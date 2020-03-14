@@ -34,18 +34,22 @@ func NewTelegramBot(ipmi *IPMI) (*TelegramBot, error) {
 func (t *TelegramBot) Serve() {
 	getStatusBtn := tb.ReplyButton{Text: "GetStatus"}
 	getTemperatureBtn := tb.ReplyButton{Text: "GetTemperature"}
-	setPowerOnBtn := tb.ReplyButton{Text: "SetPowerOn"}
-	setPowerOffBtn := tb.ReplyButton{Text: "SetPowerOff"}
+	setPowerOnBtn := tb.ReplyButton{Text: "PowerOn"}
+	setPowerOffBtn := tb.ReplyButton{Text: "PowerOff"}
+	setPowerResetBtn := tb.ReplyButton{Text: "PowerReset"}
+	setPowerCycleBtn := tb.ReplyButton{Text: "PowerCycle"}
 
 	replyKeys := [][]tb.ReplyButton{
 		{getStatusBtn, getTemperatureBtn},
-		{setPowerOnBtn, setPowerOffBtn},
+		{setPowerOnBtn, setPowerOffBtn, setPowerResetBtn, setPowerCycleBtn},
 	}
 
 	t.bot.Handle(&getStatusBtn, t.callbackFactory(t.GetStatus))
 	t.bot.Handle(&getTemperatureBtn, t.callbackFactory(t.GetTemperature))
 	t.bot.Handle(&setPowerOnBtn, t.callbackFactory(t.SetPowerOn))
 	t.bot.Handle(&setPowerOffBtn, t.callbackFactory(t.SetPowerOff))
+	t.bot.Handle(&setPowerResetBtn, t.callbackFactory(t.SetPowerReset))
+	t.bot.Handle(&setPowerCycleBtn, t.callbackFactory(t.SetPowerCycle))
 	t.bot.Handle("/ipmi", func(m *tb.Message) {
 		if !m.Private() {
 			return

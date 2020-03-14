@@ -65,6 +65,14 @@ func (e *IPMI) SetPowerOff() (string, error) {
 	return e.execute("power", "off")
 }
 
+func (e *IPMI) SetPowerReset() (string, error) {
+	return e.execute("power", "reset")
+}
+
+func (e *IPMI) SetPowerCycle() (string, error) {
+	return e.execute("power", "cycle")
+}
+
 func (e *IPMI) GetTemperature() (string, error) {
 	output, err := e.execute("sdr", "type", "Temperature")
 	if err != nil {
