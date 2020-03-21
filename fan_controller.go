@@ -3,30 +3,44 @@ package ipmi_controller
 import (
 	"log"
 	"time"
+
+	"github.com/ihciah/ipmi-controller/pkg/ipmi"
 )
 
-func ControlFanSpeed(e *IPMI) {
-	ticker := time.NewTicker(time.Duration(e.Config.ControllerConfig.Ticker) * time.Second)
+type FanController struct {
+	ipmi *ipmi.IPMI
+	cfg ControllerConfig
+}
+
+func NewFanController(ipmi *ipmi.IPMI, cfg ControllerConfig) *FanController {
+	return &FanController{
+		ipmi: ipmi,
+		cfg:  cfg,
+	}
+}
+
+func (fc *FanController) Start() {
+	ticker := time.NewTicker(time.Duration(fc.cfg.Ticker) * time.Second)
 	defer ticker.Stop()
 	for {
-		temp, err := e.GetTemperatureNumber()
+		temp, err := fc.ipmi.GetTemperatureNumber()
 		if err == nil {
 			log.Printf("get temperature %d", temp)
 			switch true {
 			case temp < 30:
-				_, err = e.SetFanSpeed(8)
+				_, err = fc.ipmi.SetFanSpeed(8)
 			case temp < 45:
-				_, err = e.SetFanSpeed(10)
+				_, err = fc.ipmi.SetFanSpeed(10)
 			case temp < 55:
-				_, err = e.SetFanSpeed(13)
+				_, err = fc.ipmi.SetFanSpeed(13)
 			case temp < 65:
-				_, err = e.SetFanSpeed(18)
+				_, err = fc.ipmi.SetFanSpeed(18)
 			case temp < 75:
-				_, err = e.SetFanSpeed(25)
+				_, err = fc.ipmi.SetFanSpeed(25)
 			case temp < 85:
-				_, err = e.SetFanSpeed(35)
+				_, err = fc.ipmi.SetFanSpeed(35)
 			default:
-				_, err = e.SetFanSpeed(0)
+				_, err = fc.ipmi.SetFanSpeed(0)
 			}
 			if err != nil {
 				log.Printf("error when SetFanSpeed: %v", err)

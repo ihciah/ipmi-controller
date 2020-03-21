@@ -6,11 +6,5 @@
   },
   "controller": {
     "ticker": 60
-  },
-  "telegram": {
-    "token": "",
-    "url": "",
-    "poll_timeout": 10,
-    "admin": [259444514]
   }
 }

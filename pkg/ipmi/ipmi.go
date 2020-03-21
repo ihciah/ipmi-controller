@@ -1,4 +1,4 @@
-package ipmi_controller
+package ipmi
 
 import (
 	"errors"
@@ -15,18 +15,44 @@ var (
 	tempRegexp    = regexp.MustCompile(`([\w\s]*?)\|.*?(\|\s+\d*\s+degrees\s+C)`)
 )
 
-type IPMI struct {
-	Config
+type IPMIConfig struct {
+	Addr       string `json:"addr"`
+	Username   string `json:"username"`
+	Password   string `json:"password"`
+	Executable string `json:"executable"`
 }
 
-func NewIPMI(config Config) *IPMI {
-	return &IPMI{Config: config}
+func (c *IPMIConfig) Validate() error {
+	if c.Addr == "" {
+		return errors.New("IPMI addr can not be blank")
+	}
+	if c.Username == "" {
+		return errors.New("IPMI username can not be blank")
+	}
+	if c.Password == "" {
+		return errors.New("IPMI password can not be blank")
+	}
+	if c.Executable == "" {
+		c.Executable = "ipmitool"
+	}
+	return nil
+}
+
+type IPMI IPMIConfig
+
+func NewIPMI(addr, username, password, executable string) *IPMI {
+	return &IPMI{
+		Addr:       addr,
+		Username:   username,
+		Password:   password,
+		Executable: executable,
+	}
 }
 
 func (e *IPMI) execute(arg ...string) (string, error) {
-	args := []string{"-I", "lanplus", "-H", e.IPMIConfig.Addr, "-U", e.IPMIConfig.Username, "-P", e.IPMIConfig.Password}
+	args := []string{"-I", "lanplus", "-H", e.Addr, "-U", e.Username, "-P", e.Password}
 	args = append(args, arg...)
-	cmd := exec.Command(e.ControllerConfig.Executable, args...)
+	cmd := exec.Command(e.Executable, args...)
 	log.Print("Executing", cmd.Args)
 	content, err := cmd.Output()
 	if err != nil {
