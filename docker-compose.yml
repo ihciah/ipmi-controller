@@ -1,0 +1,11 @@
+version: '2.4'
+services:
+  ipmi-controller:
+    image: ihciah/ipmi-controller:latest
+    container_name: ipmi-controller
+    restart: always
+    network_mode: "host"
+    volumes:
+      - type: "bind"
+        source: "./config.json"
+        target: "/config.json"
