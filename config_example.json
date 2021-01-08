@@ -5,6 +5,15 @@
     "password": "calvin"
   },
   "controller": {
-    "ticker": 60
+    "ticker": 60,
+    "speed": [
+      {"temperature": 40, "percentage": 1},
+      {"temperature": 45, "percentage": 2},
+      {"temperature": 55, "percentage": 3},
+      {"temperature": 65, "percentage": 5},
+      {"temperature": 75, "percentage": 10},
+      {"temperature": 85, "percentage": 20},
+      {"temperature": 90, "percentage": 40}
+    ]
   }
 }

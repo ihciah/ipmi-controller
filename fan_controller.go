@@ -9,7 +9,7 @@ import (
 
 type FanController struct {
 	ipmi *ipmi.IPMI
-	cfg ControllerConfig
+	cfg  ControllerConfig
 }
 
 func NewFanController(ipmi *ipmi.IPMI, cfg ControllerConfig) *FanController {
@@ -26,22 +26,7 @@ func (fc *FanController) Start() {
 		temp, err := fc.ipmi.GetTemperatureNumber()
 		if err == nil {
 			log.Printf("get temperature %d", temp)
-			switch true {
-			case temp < 30:
-				_, err = fc.ipmi.SetFanSpeed(8)
-			case temp < 45:
-				_, err = fc.ipmi.SetFanSpeed(10)
-			case temp < 55:
-				_, err = fc.ipmi.SetFanSpeed(13)
-			case temp < 65:
-				_, err = fc.ipmi.SetFanSpeed(18)
-			case temp < 75:
-				_, err = fc.ipmi.SetFanSpeed(25)
-			case temp < 85:
-				_, err = fc.ipmi.SetFanSpeed(35)
-			default:
-				_, err = fc.ipmi.SetFanSpeed(0)
-			}
+			_, err = fc.ipmi.SetFanSpeed(getSpeed(temp, fc.cfg.SpeedConfig))
 			if err != nil {
 				log.Printf("error when SetFanSpeed: %v", err)
 			}
@@ -50,4 +35,13 @@ func (fc *FanController) Start() {
 		}
 		<-ticker.C
 	}
+}
+
+func getSpeed(temp int, config []SpeedConfig) int {
+	for _, pair := range config {
+		if temp < pair.Temperature {
+			return pair.Percentage
+		}
+	}
+	return 0
 }

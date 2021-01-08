@@ -12,13 +12,30 @@ type Config struct {
 	ControllerConfig ControllerConfig `json:"controller"`
 }
 
+type SpeedConfig struct {
+	Temperature int `json:"temperature"`
+	Percentage  int `json:"percentage"`
+}
+
 type ControllerConfig struct {
-	Ticker int `json:"ticker"`
+	Ticker      int           `json:"ticker"`
+	SpeedConfig []SpeedConfig `json:"speed"`
 }
 
 func (c *ControllerConfig) Validate() error {
 	if c.Ticker == 0 {
 		c.Ticker = 60
+	}
+	if c.SpeedConfig == nil || len(c.SpeedConfig) == 0 {
+		c.SpeedConfig = []SpeedConfig{
+			{40, 1},
+			{45, 2},
+			{55, 3},
+			{65, 5},
+			{75, 10},
+			{85, 20},
+			{90, 40},
+		}
 	}
 	return nil
 }
